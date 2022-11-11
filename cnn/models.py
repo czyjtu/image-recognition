@@ -126,3 +126,9 @@ MODEL_REGISTRY["model8_gap"] = lambda: th.nn.Sequential(
     th.nn.Linear(160, 10),
     th.nn.Softmax(dim=-1)
 )
+
+
+if __name__ == "__main__":
+    for name, model in MODEL_REGISTRY.items():
+        pytorch_total_params = sum(p.numel() for p in model().parameters() if p.requires_grad)
+        print(f"{name}: {pytorch_total_params}")

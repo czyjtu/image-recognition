@@ -8,9 +8,9 @@ import torch.nn.functional as F
 
 
 def get_custom_dataset_loaders(
-    data_dir: Path,
     img_shape: tuple[int, int],
     device: str,
+    data_dir: Path=Path(__file__).parent / "data",
     batch_size: int = 64,
     test_ratio: float=0.2,
 ) -> tuple[th_data.DataLoader, th_data.DataLoader]:

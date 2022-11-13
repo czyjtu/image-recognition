@@ -54,8 +54,9 @@ class Train:
 
     def __call__(self, model: th.nn.Module, params: TrainingParams) -> th.nn.Module:
         criterion = th.nn.CrossEntropyLoss()
+        trainable_parameters = [p for p in model.parameters() if p.requires_grad]
         optimizer = th.optim.SGD(
-            model.parameters(), lr=params.lr, momentum=params.momentum
+            trainable_parameters, lr=params.lr, momentum=params.momentum
         )
         for e in tqdm(range(params.epochs)):
             train_loss, train_acc = self._train_epoch(
@@ -106,6 +107,7 @@ class Train:
     def _validate(
         self, model: th.nn.Module, data: th_data.DataLoader, criterion: th.nn.Module
     ) -> tuple[float, float]:
+
         running_loss = 0.0
         total = 0
         correct = 0
@@ -124,7 +126,6 @@ class Train:
                 _, labels = th.max(targets, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-
         return running_loss, correct / total
 
 
